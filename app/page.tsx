@@ -8,18 +8,37 @@ import TrueFocus from "./components/TrueFocus/TrueFocus";
 import Orb from "./components/Orb/Orb";
 import ProfileCard from "./components/ProfileCard/ProfileCard";
 import Dock from "./components/Dock/Dock";
-import { VscHome, VscArchive, VscAccount, VscSettingsGear } from "react-icons/vsc";
+import { VscHome, VscArchive, VscAccount } from "react-icons/vsc";
 import SpotlightCard from "./components/SpotlightCard/SpotlightCard";
+import DecryptedText from "./components/DecryptedText/DecryptedText";
+import SplashCursor from "./components/SplashCursor/SplashCursor";
+import ScrollLine from "./components/ScrollLine/ScrollLine";
+import { useRef } from "react";
 
 export default function Home() {
+
+  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const handleStepChange = (step: number) => {
+    if (stepRefs.current[step - 1]) {
+      stepRefs.current[step - 1]?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  };
+
+  // Function untuk set ref
+  const setStepRef = (index: number) => (el: HTMLDivElement | null) => {
+    stepRefs.current[index] = el;
+  };
 
   const items = [
     { icon: <VscHome size={18} />, label: 'Home', onClick: () => alert('Home!') },
     { icon: <VscArchive size={18} />, label: 'Archive', onClick: () => alert('Archive!') },
     { icon: <VscAccount size={18} />, label: 'Profile', onClick: () => alert('Profile!') },
-    // { icon: <VscSettingsGear size={18} />, label: 'Settings', onClick: () => alert('Settings!') },
   ];
-
+  
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#000000]">
       {/* Background Orb */}
@@ -95,9 +114,9 @@ export default function Home() {
         />
       </div>
 
-      {/* Profile Card Section - ikut alur scroll */}
-      <div className="px-70 py-20 flex gap-10 items-start mt-10"> {/* Tidak ada perubahan */}
-      {/* Kiri - Profile Card */}
+      {/* Profile Card Section */}
+      <div className="px-70 py-20 flex gap-10 items-start mt-10">
+        {/* Kiri - Profile Card */}
         <div className="flex flex-col">
           <h1 className="text-6xl font-bold text-white mb-5">What I Do</h1>
           <ProfileCard
@@ -120,8 +139,8 @@ export default function Home() {
           <SpotlightCard>
             <h2 className="text-3xl font-bold text-white mb-4">DEVELOP</h2>
             <p className="text-gray-300 mb-6">
-              Started creating Web Development using NextJS, React, and Tailwind
-              and eventually switched to Mobile Development using React Native
+              <DecryptedText text="Started creating Web Development using NextJS, React, and Tailwind
+              and eventually switched to Mobile Development using React Native." />
             </p>
 
             <h3 className="text-lg font-bold text-[#00d1b2] mb-4">Skillset &amp; tools</h3>
@@ -140,7 +159,7 @@ export default function Home() {
               ].map((skill) => (
                 <span
                   key={skill}
-                  className="px-4 py-2 rounded-full border border-gray-500 text-gray-200 text-sm"
+                  className="px-4 py-2 rounded-full border border-gray-500 text-gray-200 text-sm transition-colors duration-300 hover:bg-[#00d1b2] hover:text-black hover:border-[#00d1b2]"
                 >
                   {skill}
                 </span>
@@ -152,8 +171,8 @@ export default function Home() {
           <SpotlightCard>
             <h2 className="text-3xl font-bold text-white mb-4">CREATE</h2>
             <p className="text-gray-300 mb-6">
-              Aspiring content creator and junior developer, passionate about telling
-              stories through both words and code. Currently learning and building as I go.
+              <DecryptedText text="Aspiring content creator and junior developer, passionate about telling
+                stories through both words and code. Currently learning and building as I go." />
             </p>
 
             <h3 className="text-lg font-bold text-[#00d1b2] mb-4">Skillset &amp; Tools</h3>
@@ -161,12 +180,27 @@ export default function Home() {
               {["Figma", "Canva", "Capcut"].map((tool) => (
                 <span
                   key={tool}
-                  className="px-4 py-2 rounded-full border border-gray-500 text-gray-200 text-sm">
+                  className="px-4 py-2 rounded-full border border-gray-500 text-gray-200 text-sm transition-colors duration-300 hover:bg-[#00d1b2] hover:text-black hover:border-[#00d1b2]"
+                >
                   {tool}
                 </span>
               ))}
             </div>
           </SpotlightCard>
+        </div>
+      </div>
+
+      {/* === Stepper Section === */}
+      <div className="py-20 relative container mx-auto px-4"> {/* Tambahkan container dan padding */}
+        <h2 className="text-center text-8xl font-bold text-white mb-10">My Journey</h2>
+        <div className="relative h-[800px] mt-30"> {/* Tambahkan container dengan height tertentu */}
+          <ScrollLine 
+            color="#00ffff"
+            glowColor="rgba(0, 255, 255, 0.6)"
+            thickness={4}
+            height="100%"
+          />
+          {/* Tempatkan Stepper di sini jika ada */}
         </div>
       </div>
 
