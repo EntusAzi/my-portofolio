@@ -96,7 +96,7 @@ const BlurText: React.FC<BlurTextProps> = ({
   );
 
   return (
-    <p ref={ref} className={`blur-text ${className} flex flex-nowrap whitespace-nowrap overflow-hidden`}>
+    <p ref={ref} className={`blur-text ${className} flex flex-nowrap whitespace-nowrap overflow-visible`}>
       {elements.map((segment, index) => {
         const animateKeyframes = buildKeyframes(fromSnapshot, toSnapshots);
 

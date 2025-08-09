@@ -34,7 +34,7 @@ interface LanyardProps {
 }
 
 export default function Lanyard({
-  position = [0, 0, 30],
+  position = [0, 0, 30], // Diubah dari [0, 0, 30] ke [2, 2, 30] untuk posisi kanan dan atas
   gravity = [0, -40, 0],
   fov = 20,
   transparent = true,
@@ -204,7 +204,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
 
   return (
     <>
-      <group position={[0, 4, 0]}>
+      <group position={[1, 4.5, 0]}> {/* Diubah dari [0, 4, 0] ke [2, 6, 0] untuk posisi kanan dan atas */}
         <RigidBody
           ref={fixed}
           {...segmentProps}
