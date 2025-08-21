@@ -14,6 +14,7 @@ import DecryptedText from "./components/DecryptedText/DecryptedText";
 import SplashCursor from "./components/SplashCursor/SplashCursor";
 import ScrollLine from "./components/ScrollLine/ScrollLine";
 import { useRef } from "react";
+import ScrambledText from "./components/ScrambledText/ScrambledText";
 
 export default function Home() {
 
@@ -58,20 +59,20 @@ export default function Home() {
           <div className="col-span-6 flex flex-col justify-center">
             <div className="space-y-4 px-6">
               <div className="flex justify-start w-full overflow-visible mr-8">
-                 <BlurText 
-                   text="ENTUS AZI BACHTIAR"
-                   delay={600}
-                   animateBy="words"
-                   direction="top"
-                   className="text-9xl font-bold text-white leading-tight tracking-tight"
-                 />  
-               </div>
+                <BlurText 
+                  text="ENTUS AZI BACHTIAR"
+                  delay={600}
+                  animateBy="words"
+                  direction="top"
+                  className="text-9xl font-bold text-white leading-tight tracking-tight"
+                />  
+              </div>
               
               <div className="flex items-center gap-4">
-                <h1 className="text-2xl text-white font-bold">I'm Ready For Job</h1>
+                <h1 className="text-4xl text-white font-bold">I'm Ready For Job</h1>
                 <RotatingText 
                   texts={['Web Developer', 'UI/UX Designer', 'Freelancer']}
-                  mainClassName="px-3 bg-[#80D8C3] text-black overflow-hidden py-2 justify-center rounded-lg text-2xl font-bold inline-flex transition-all"
+                  mainClassName="px-7 bg-[#80D8C3] text-black overflow-hidden py-3 justify-center rounded-lg text-3xl font-bold inline-flex transition-all"
                   staggerFrom={"last"}
                   initial={{ y: "100%" }}
                   animate={{ y: 0 }}
@@ -191,26 +192,78 @@ export default function Home() {
       </div>
 
       {/* === Stepper Section === */}
-      <div className="py-20 relative container mx-auto px-4"> {/* Tambahkan container dan padding */}
+      <div className="py-20 relative mx-auto px-2"> {/* Tambahkan container dan padding */}
         <h2 className="text-center text-8xl font-bold text-white mb-10">My Journey</h2>
-        <div className="relative h-[800px] mt-30"> {/* Tambahkan container dengan height tertentu */}
+        <div className="relative h-[800px] mt-30 flex justify-end"> {/* Tambahkan container dengan height tertentu dan posisi text di sebelah kanan */}
           <ScrollLine 
             color="#00ffff"
             glowColor="rgba(0, 255, 255, 0.6)"
             thickness={4}
             height="100%"
           />
-          {/* Tempatkan Stepper di sini jika ada */}
+          
+          {/* Text di kiri atas */}
+          <div className="absolute left-0 top-6 flex flex-col items-start justify-start py-1 px-8 ml-4 -translate-y-2">
+            <ScrambledText
+              className="scrambled-text-demo"
+              radius={100}
+              duration={1.2}
+              speed={0.5}
+            >
+              <h1 className="text-2xl font-bold text-white text-left">Teknologi Rekayasa Perangkat Lunak</h1>
+              <p className="text-2xl font-bold text-white text-left">Institut Pertanian Bogor</p>
+            </ScrambledText>
+          </div>
+
+          {/* Text di kanan tengah */}
+          <div className="absolute right-0 top-48 flex flex-col items-end justify-start py-1 px-8 mr-4 -translate-y-2">
+            <ScrambledText
+              className="scrambled-text-demo"
+              radius={100}
+              duration={1.2}
+              speed={0.5}
+            >
+              <h1 className="text-2xl font-bold text-white text-right">Teknologi Rekayasa Perangkat Lunak</h1>
+              <p className="text-2xl font-bold text-white text-right">Institut Pertanian Bogor</p>
+            </ScrambledText>
+          </div>
+
+          {/* Text di kiri tengah bawah */}
+          <div className="absolute left-0 top-96 flex flex-col items-start justify-start py-1 px-8 ml-4 -translate-y-2">
+            <ScrambledText
+              className="scrambled-text-demo"
+              radius={100}
+              duration={1.2}
+              speed={0.5}
+            >
+              <h1 className="text-2xl font-bold text-white text-left">Teknologi Rekayasa Perangkat Lunak</h1>
+              <p className="text-2xl font-bold text-white text-left">Institut Pertanian Bogor</p>
+            </ScrambledText>
+          </div>
+
+          {/* Text di kanan bawah */}
+          <div className="absolute right-0 top-[36rem] flex flex-col items-end justify-start py-1 px-8 mr-4 -translate-y-2">
+            <ScrambledText
+              className="scrambled-text-demo"
+              radius={100}
+              duration={1.2}
+              speed={0.5}
+            >
+              <h1 className="text-2xl font-bold text-white text-right">Teknologi Rekayasa Perangkat Lunak</h1>
+              <p className="text-2xl font-bold text-white text-right">Institut Pertanian Bogor</p>
+            </ScrambledText>
+          </div>
+          
         </div>
       </div>
 
       {/* Dock Section */}
       <div className="fixed bottom-0 left-0 w-full">
         <Dock 
-         items={items}
-         panelHeight={68}
-         baseItemSize={50}
-         magnification={70}
+        items={items}
+        panelHeight={68}
+        baseItemSize={50}
+        magnification={70}
         />
       </div>
     </div>

@@ -12,6 +12,7 @@
     "@react-three/drei": "^10.6.1",
     "@react-three/fiber": "^9.3.0",
     "@react-three/rapier": "^2.1.0",
+    "@types/gsap": "^1.20.2",
     "framer-motion": "^12.23.12",
     "gsap": "^3.13.0",
     "meshline": "^3.3.1",

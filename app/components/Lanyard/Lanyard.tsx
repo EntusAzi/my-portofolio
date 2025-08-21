@@ -100,6 +100,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
   const j2 = useRef<any>(null);
   const j3 = useRef<any>(null);
   const card = useRef<any>(null);
+  const cardGroup = useRef<any>(null);
 
   const vec = new THREE.Vector3();
   const ang = new THREE.Vector3();
@@ -127,6 +128,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
   );
   const [dragged, drag] = useState<false | THREE.Vector3>(false);
   const [hovered, hover] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
 
   const [isSmall, setIsSmall] = useState<boolean>(() => {
     if (typeof window !== "undefined") {
@@ -196,8 +198,25 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
       ang.copy(card.current.angvel());
       rot.copy(card.current.rotation());
       card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
+      
+      // Smooth card rotation animation
+      if (cardGroup.current) {
+        const targetRotation = isFlipped ? Math.PI : 0;
+        cardGroup.current.rotation.y = THREE.MathUtils.lerp(
+          cardGroup.current.rotation.y,
+          targetRotation,
+          delta * 5
+        );
+      }
     }
   });
+
+  const handleCardClick = (e: any) => {
+    e.stopPropagation();
+    if (!dragged) {
+      setIsFlipped(!isFlipped);
+    }
+  };
 
   curve.curveType = "chordal";
   texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
@@ -246,6 +265,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
         >
           <CuboidCollider args={[0.8, 1.125, 0.01]} />
           <group
+            ref={cardGroup}
             scale={2.25}
             position={[0, -1.2, -0.05]}
             onPointerOver={() => hover(true)}
@@ -262,6 +282,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
                   .sub(vec.copy(card.current.translation()))
               );
             }}
+            onClick={handleCardClick}
           >
             <mesh geometry={nodes.card.geometry}>
               <meshPhysicalMaterial
