@@ -13,12 +13,52 @@ import SpotlightCard from "./components/SpotlightCard/SpotlightCard";
 import DecryptedText from "./components/DecryptedText/DecryptedText";
 import SplashCursor from "./components/SplashCursor/SplashCursor";
 import ScrollLine from "./components/ScrollLine/ScrollLine";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import ScrambledText from "./components/ScrambledText/ScrambledText";
 
 export default function Home() {
 
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const timelineRef = useRef<HTMLDivElement>(null);
+
+  // Scroll animation for timeline
+  useEffect(() => {
+    const handleScroll = () => {
+      if (timelineRef.current) {
+        const rect = timelineRef.current.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        const timelineHeight = rect.height;
+        
+        // Calculate scroll progress based on timeline visibility
+        const scrollTop = window.scrollY;
+        const timelineStart = scrollTop + rect.top;
+        const timelineEnd = timelineStart + timelineHeight;
+        
+        // Calculate progress (0 to 1)
+        const viewportTop = scrollTop;
+        const viewportBottom = scrollTop + windowHeight;
+        
+        let progress = 0;
+        if (viewportBottom > timelineStart && viewportTop < timelineEnd) {
+          const visibleStart = Math.max(viewportTop, timelineStart);
+          const visibleEnd = Math.min(viewportBottom, timelineEnd);
+          const visibleHeight = visibleEnd - visibleStart;
+          const totalScrollable = timelineHeight + windowHeight;
+          
+          progress = Math.min((viewportBottom - timelineStart) / totalScrollable, 1);
+          progress = Math.max(progress, 0);
+        }
+        
+        setScrollProgress(progress);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial call
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleStepChange = (step: number) => {
     if (stepRefs.current[step - 1]) {
@@ -248,11 +288,39 @@ export default function Home() {
             </div>
             
             {/* Timeline Container */}
-            <div className="relative max-w-4xl mx-auto">
+            <div ref={timelineRef} className="relative max-w-4xl mx-auto">
               {/* Central Timeline Line */}
               <div className="absolute left-1/2 top-0 bottom-0 w-1 transform -translate-x-1/2">
-                <div className="w-full h-full bg-gradient-to-b from-[#00d1b2] via-purple-500 to-orange-500 rounded-full shadow-lg"></div>
-                <div className="absolute inset-0 bg-gradient-to-b from-[#00d1b2] via-purple-500 to-orange-500 rounded-full blur-sm opacity-50"></div>
+                {/* Background line */}
+                <div className="w-full h-full bg-gray-800 rounded-full shadow-lg"></div>
+                {/* Animated progress line */}
+                <div 
+                  className="absolute top-0 left-0 w-full bg-gradient-to-b from-[#00d1b2] via-purple-500 to-orange-500 rounded-full shadow-lg transition-all duration-300 ease-out"
+                  style={{
+                    height: `${scrollProgress * 100}%`,
+                    boxShadow: '0 0 20px rgba(0, 209, 178, 0.5)'
+                  }}
+                ></div>
+                {/* Glowing effect */}
+                <div 
+                  className="absolute top-0 left-0 w-full bg-gradient-to-b from-[#00d1b2] via-purple-500 to-orange-500 rounded-full blur-sm opacity-50 transition-all duration-300 ease-out"
+                  style={{
+                    height: `${scrollProgress * 100}%`
+                  }}
+                ></div>
+                {/* Moving dot at the end of progress */}
+                {scrollProgress > 0 && (
+                  <div 
+                    className="absolute left-1/2 w-3 h-3 bg-gradient-to-br from-[#00d1b2] to-[#80D8C3] rounded-full transform -translate-x-1/2 shadow-lg transition-all duration-300 ease-out"
+                    style={{
+                      top: `${scrollProgress * 100}%`,
+                      marginTop: '-6px',
+                      boxShadow: '0 0 15px rgba(0, 209, 178, 0.8)'
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#00d1b2] to-[#80D8C3] rounded-full animate-ping opacity-40"></div>
+                  </div>
+                )}
               </div>
               
               {/* Timeline Items */}
